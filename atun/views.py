@@ -8,27 +8,39 @@ import sys
 
 def signup(request):
     if request.method == 'POST':
+        username=request.POST['username']
+        email=request.POST['email']
         if 'create' in request.POST:
-            User.objects.create_user(
-                first_name=request.POST['first_name'],
-                last_name=request.POST['last_name'],
-                username=request.POST['username'],
-                email=request.POST['email'],
-                password=request.POST['password']
-            )
-            messages.success(request,'Account created successfully')
+            if User.objects.filter(username=username).exists():
+                messages.error(request,'Username already exists')
+                return redirect('atun:signup')
+            elif User.objects.filter(email=email).exists():
+                messages.error(request,'Email already exists')
+                return redirect('atun:signup')
+            try:
+                User.objects.create_user(
+                    first_name=request.POST['first_name'],
+                    last_name=request.POST['last_name'],
+                    username=request.POST['username'],
+                    email=request.POST['email'],
+                    password=request.POST['password']
+                )
+                messages.success(request,'Account created successfully')
 
-            subject = 'Welcome to Study Buddy'
-            message = f'Hi {request.POST["first_name"]}, thank you for registering at Study Buddy. We are excited to have you on board!\n'\
-            'If you have any questions or need assistance, feel free to reach out to our support team.\n'\
-            'Happy studying!\n'\
-            'Best regards,\n'\
-            'The Study Buddy Team'
+                subject = 'Welcome to Study Buddy'
+                message = f'Hi {request.POST["first_name"]}, thank you for registering at Study Buddy. We are excited to have you on board!\n'\
+                'If you have any questions or need assistance, feel free to reach out to our support team.\n'\
+                'Happy studying!\n'\
+                'Best regards,\n'\
+                'The Study Buddy Team'
 
 
-            from_email='indranilde92@gmail.com'
-            send_mail(subject, message, from_email, [request.POST['email']])
-            return redirect('atun:signin')
+                from_email='indranilde92@gmail.com'
+                send_mail(subject, message, from_email, [request.POST['email']])
+                return redirect('atun:signin')
+            except InterruptedError:
+                messages.error(request,'Error creating account')
+                return redirect('atun:signup')
         elif 'reset' in request.POST:
             return redirect('atun:signup')
     return render(request, 'signup.html')
