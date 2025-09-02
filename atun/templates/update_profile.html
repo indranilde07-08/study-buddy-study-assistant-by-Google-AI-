@@ -1,0 +1,43 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="profile-update-container">
+    <h2 class="profile-update-title">👤 Update Profile</h2>
+
+    {% if messages %}
+    <div class="message-box">
+        {% for message in messages %}
+            <p id="message">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post" class="profile-update-form">
+        {% csrf_token %}
+
+        <div class="input-group">
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" placeholder="Enter first name" value="{{ user.first_name }}">
+        </div>
+
+        <div class="input-group">
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" placeholder="Enter last name" value="{{ user.last_name }}">
+        </div>
+
+        <div class="input-group">
+            <label for="user_name">Username:</label>
+            <input type="text" id="user_name" name="user_name" placeholder="Enter username" value="{{ user.username }}">
+        </div>
+
+        <div class="input-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter email" value="{{ user.email }}">
+        </div>
+
+        <div class="button-group">
+            <button type="submit" name="update" class="btn update-btn">💾 Update</button>
+            <button type="reset" name="reset" class="btn reset-btn">♻️ Reset</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

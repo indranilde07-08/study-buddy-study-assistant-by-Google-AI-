@@ -1,0 +1,28 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="mainapp-container">
+    <h2 class="mainapp-title">📚 Upload Study Material</h2>
+
+    {% if messages %}
+    <div class="message-box">
+        {% for message in messages %}
+            <p id="message">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <form method="post" enctype="multipart/form-data" class="mainapp-form">
+        {% csrf_token %}
+        <div class="form-fields">
+            {{ form.as_p }}
+        </div>
+
+        <div class="button-group">
+            <button type="submit" name="create" class="btn main-btn">⬆️ Upload</button>
+            <button type="reset" name="reset" class="btn reset-btn">♻️ Reset</button>
+        </div>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

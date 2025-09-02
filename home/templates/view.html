@@ -1,0 +1,55 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="mainapp-container">
+    <h2 class="mainapp-title">📂 View Study Materials</h2>
+
+    {% if user.is_authenticated %}
+        {% if messages %}
+        <div class="message-box">
+            {% for message in messages %}
+                <p id="message">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if materials %}
+        <div class="table-container">
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>📖 Title</th>
+                        <th>📑 PDF</th>
+                        <th>⏳ Uploaded At</th>
+                        <th>Edit Material</th>
+                        <th>Delete Material</th>
+                        <th>📝 Summary Notes</th>
+                        <th>❓ Quiz Questions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for material in materials %}
+                    <tr>
+                        <td>{{ material.title }}</td>
+                        <td><a href="{{ material.pdf.url }}" >⬇️ Download</a></td>
+                        <td>{{ material.uploaded_at }}</td>
+                        <td><a href="{% url 'home:edit' material.id %}"><button class="edit-btn">✏️ Edit</button></a></td>
+                        <td><a href="{% url 'home:delete' material.id %}"><button id="delete_button" class="delete-btn">🗑️ Delete</button></a></td>
+                        <td><a href="{% url 'home:summary_study_material' material.id %}">
+                            <button class="btn main-btn">📝 Summary</button>
+                        </a></td>
+                        <td><a href="{% url 'home:quiz_study_material' material.id %}">
+                            <button class="btn quiz-btn">❓ Quiz</button>
+                        </a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+            <p class="empty-msg">⚠️ No study materials found. Please upload some!</p>
+        {% endif %}
+    {% else %}
+        <p class="empty-msg">🔒 Please login to view study materials</p>
+    {% endif %}
+</div>
+{% endblock %}

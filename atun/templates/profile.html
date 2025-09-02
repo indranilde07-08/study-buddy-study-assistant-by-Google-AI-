@@ -1,0 +1,33 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="profile-container">
+    <h2 class="profile-title">👤 User Profile</h2>
+
+    {% if messages %}
+    <div class="message-box">
+        {% for message in messages %}
+            <p id="message">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <div class="profile-card">
+        <div class="input-group">
+            <label for="user_name">Username:</label>
+            <input type="text" id="user_name" name="user_name" value="{{ user.username }}" readonly>
+        </div>
+
+        <div class="input-group">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" value="{{ user.email }}" readonly>
+        </div>
+
+        <div class="button-group">
+            <a href="{% url 'atun:update_profile' %}" class="btn update-btn">✏️ Update Profile</a>
+            <a href="{% url 'atun:update_password' %}" class="btn password-btn">🔑 Update Password</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

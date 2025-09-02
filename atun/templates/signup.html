@@ -1,0 +1,50 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="signup-container">
+    <h2 class="signup-title">✨ Create Your Account ✨</h2>
+
+    {% if messages %}
+    <div class="message-box">
+        {% for message in messages %}
+            <p id="message">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post" class="signup-form">
+        {% csrf_token %}
+        
+        <div class="input-group">
+            <label for="first_name">👤 First Name</label>
+            <input type="text" id="first_name" name="first_name" placeholder="Enter first name" required>
+        </div>
+
+        <div class="input-group">
+            <label for="last_name">👥 Last Name</label>
+            <input type="text" id="last_name" name="last_name" placeholder="Enter last name" required>
+        </div>
+
+        <div class="input-group">
+            <label for="email">📧 Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter email" required>
+        </div>
+
+        <div class="input-group">
+            <label for="username">🎭 Username</label>
+            <input type="text" id="username" name="username" placeholder="Choose username" required>
+        </div>
+
+        <div class="input-group">
+            <label for="password">🔒 Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter password" required>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" name="create" class="btn submit-btn">🚀 Create</button>
+            <button type="reset" name="reset" class="btn reset-btn">♻ Reset</button>
+        </div>
+
+        <p class="signin-link">Already have an account? <a href="{% url 'atun:signin' %}">🔑 Sign in</a></p>
+    </form>
+</div>
+{% endblock %}

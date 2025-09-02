@@ -1,0 +1,42 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/summary.css' %}">
+
+<div class="summary-container">
+    <h2 class="summary-title">📝 Summary of {{ material.title }}</h2>
+
+    <p class="file-link">
+        📑 Original File: 
+        <a href="{{ material.pdf.url }}" target="_blank">{{ material.pdf.name }}</a>
+    </p>
+
+    <form method="post" onsubmit="showLoading()">
+        {% csrf_token %}
+        <label for="lines" class="input-label">Summary Length (lines):</label>
+        <input type="number" name="lines" id="lines" value="250" class="input-box">
+        <button type="submit" class="btn main-btn">⚡ Generate Summary</button>
+    </form>
+
+    <!-- Loading Animation -->
+    <div id="loading-msg" class="loading-msg" style="display: none;">
+        <span class="loader"></span> ⏳ Please wait... Generating your summary
+    </div>
+
+    <!-- Summary Display -->
+    {% if summary %}
+        <div class="summary-box fade-in">
+            <h3 class="summary-heading">✅ Generated Summary:</h3>
+            <pre class="summary-text">{{ summary }}</pre>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    function showLoading() {
+        document.getElementById("loading-msg").style.display = "block";
+    }
+</script>
+{% endblock %}
+
+

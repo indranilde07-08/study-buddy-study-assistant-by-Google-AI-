@@ -1,0 +1,74 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="quiz-container">
+    <h2 class="quiz-title">📝 Quiz for {{ material.title }}</h2>
+
+    <p class="file-link">
+        📑 Original File: 
+        <a href="{{ material.pdf.url }}" target="_blank">{{ material.pdf.name }}</a>
+    </p>
+
+    <!-- Generate Quiz Form -->
+    <form method="post" class="generate-form" onsubmit="showLoading()">
+        {% csrf_token %}
+        <label for="num_questions" class="input-label">Number of questions:</label>
+        <input type="number" id="num_questions" name="num_questions" value="5" min="1" max="20" class="input-box">
+        <button type="submit" name="generate" class="btn main-btn">⚡ Generate Quiz</button>
+    </form>
+
+    <!-- Loading message -->
+    <div id="loading-msg" class="loading-msg" style="display: none;">
+        ⏳ Please wait... Generating quiz
+    </div>
+
+    <hr>
+
+    {% if quiz_data %}
+    <!-- Quiz Form -->
+    <form method="post" class="quiz-form">
+        {% csrf_token %}
+        {% for q in quiz_data %}
+            <div class="question-block">
+                <p class="question"><b>{{ forloop.counter }}. {{ q.question }}</b></p>
+                <div class="options">
+                    {% for option in q.options %}
+                        <label class="option">
+                            <input type="radio" name="q{{ forloop.parentloop.counter0 }}" value="{{ option }}" required>
+                            {{ option }}
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn submit-btn">✅ Submit Answers</button>
+    </form>
+    {% endif %}
+
+    <!-- Results -->
+    {% if correct_score is not None or wrong_score is not None %}
+        <div class="results-box">
+            <h3>📊 Your Score:</h3>
+            <p>✅ Correct: <b>{{ correct_score }}</b></p>
+            <p>❌ Wrong: <b>{{ wrong_score }}</b></p>
+        </div>
+    {% endif %}
+
+    {% if feedback %}
+        <div class="feedback-box">
+            <h3>💡 Feedback:</h3>
+            <ul>
+                {% for fb in feedback %}
+                    <li>{{ fb }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    function showLoading() {
+        document.getElementById("loading-msg").style.display = "block";
+    }
+</script>
+{% endblock %}
+

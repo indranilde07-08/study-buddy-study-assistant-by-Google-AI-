@@ -1,0 +1,29 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="reset-container">
+    <h2 class="reset-title">📧 Reset Your Password</h2>
+
+    <form action="{% url 'atun:email_send' %}" method="post" class="reset-form">
+        {% csrf_token %}
+        
+        <div class="input-group">
+            <label for="user_name">👤 Username</label>
+            <input type="text" id="user_name" name="username" placeholder="Enter username" required>
+        </div>
+
+        <div class="input-group">
+            <label for="email">📨 Email Address</label>
+            <input type="email" id="email" name="email" placeholder="Enter registered email" required>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn submit-btn">📩 Send OTP</button>
+            <button type="reset" class="btn reset-btn">♻ Reset</button>
+        </div>
+
+        <p class="extra-links">
+            Remember your password? <a href="{% url 'atun:signin' %}">🔑 Sign In</a>
+        </p>
+    </form>
+</div>
+{% endblock %}

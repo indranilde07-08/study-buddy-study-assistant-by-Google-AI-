@@ -1,0 +1,16 @@
+<nav class="navbar">
+    <div class="logo">📚 StudyAssistant</div>
+    <div class="nav-links">
+        {% if user.is_authenticated %}
+            <a href="{% url 'home:create' %}" class="nav-btn">📤 Upload</a>
+            <a href="{% url 'home:view' %}" class="nav-btn">📂 My Materials</a>
+            <a href="{% url 'atun:profile' %}" class="nav-btn">⚙ Update Profile</a>
+            <a href="{% url 'atun:tutorial' %}" class="nav-btn tutorial">Tutorial</a>
+            <a href="{% url 'atun:logout' %}" class="nav-btn logout">🚪 Logout</a>
+        {% else %}
+            <a href="{% url 'atun:signin' %}" class="nav-btn">🔑 Sign In</a>
+            <a href="{% url 'atun:signup' %}" class="nav-btn signup">✨ Sign Up</a>
+        {% endif %}
+    </div>
+</nav>
+

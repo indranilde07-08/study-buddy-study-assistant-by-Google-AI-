@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="update-container">
+    <h3>✏️ Update Material</h3>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="update">Update</button>
+        <button type="reset" name="reset">Reset</button>
+    </form>
+</div>
+{% endblock %}
