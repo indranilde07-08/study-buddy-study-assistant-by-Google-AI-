@@ -14,9 +14,6 @@ def signup(request):
             if User.objects.filter(username=username).exists():
                 messages.error(request,'Username already exists')
                 return redirect('atun:signup')
-            elif User.objects.filter(email=email).exists():
-                messages.error(request,'Email already exists')
-                return redirect('atun:signup')
             try:
                 User.objects.create_user(
                     first_name=request.POST['first_name'],
