@@ -9,7 +9,6 @@ import sys
 def signup(request):
     if request.method == 'POST':
         username=request.POST['username']
-        email=request.POST['email']
         if 'create' in request.POST:
             if User.objects.filter(username=username).exists():
                 messages.error(request,'Username already exists')
@@ -25,7 +24,7 @@ def signup(request):
                 messages.success(request,'Account created successfully')
 
                 subject = 'Welcome to Study Buddy'
-                message = f'Hi {request.POST["first_name"]}, thank you for registering at Study Buddy. We are excited to have you on board!\n'\
+                message = f'Hi {request.POST["first_name"]}, thank you for registering at Study Buddy. We are excited to have  you on board!\n'\
                 'If you have any questions or need assistance, feel free to reach out to our support team.\n'\
                 'Happy studying!\n'\
                 'Best regards,\n'\
