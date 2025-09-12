@@ -81,20 +81,20 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME':  'studydb',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-    }
-}
 # DATABASES = {
-#     'default': dj_database_url.config(
-#         default='postgres://postgres:1234@localhost:5432/studydb',  # local dev
-#         conn_max_age=600
-#     )
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME':  'studydb',
+#         'USER': 'postgres',
+#         'PASSWORD': '1234',
+#     }
 # }
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgres://postgres:1234@localhost:5432/studydb',  # local dev
+        conn_max_age=600
+    )
+}
 
 
 # Password validation
