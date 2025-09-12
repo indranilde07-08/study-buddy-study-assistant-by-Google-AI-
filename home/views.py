@@ -7,6 +7,7 @@ from .generative_summary import generate_summary
 from .geneeative_quiz import generate_quiz
 import sys
 from django.contrib import messages
+import time
 
 
 
@@ -50,28 +51,54 @@ def quiz_study_material(request, material_id):
     correct_score = 0
     wrong_score = 0
     feedback = []
+    time_limit_sec=60
     if request.method == 'POST':
         if 'generate' in request.POST:
             num_questions = int(request.POST.get('num_questions', 5))
+            time_limit_str = request.POST.get('time_limit')
+            mins,secs = map(int, time_limit_str.split(':'))
+            time_limit_sec = mins*60 + secs
             text = extract_text_from_pdf(material.pdf.path)
             quiz_data = generate_quiz(text, num_questions=num_questions)
             request.session['quiz_data'] = quiz_data  # Store quiz data in session
+            request.session['start_time'] = time.time()
+            request.session['time_limit_sec'] = time_limit_sec
         else:
             quiz_data = request.session.get('quiz_data',[])
+            start_time = request.session.get('start_time')
+            time_limit_sec = request.session.get('time_limit_sec')
+            end_time = time.time()
+            time_taken = min(end_time - start_time, time_limit_sec)
+            taken_mins = int(time_taken // 60)
+            taken_secs = int(time_taken % 60)
+            limit_mins = int(time_limit_sec // 60)
+            limit_secs = int(time_limit_sec % 60)
+            if time_taken >= time_limit_sec:
+                feedback.append(f"Time limit exceeded. You took {taken_mins} minutes {taken_secs} seconds. The time limit was {limit_mins} minutes {limit_secs} seconds.")
+            else:
+                feedback.append(f" You took {taken_mins} minutes {taken_secs} seconds. The time limit was {limit_mins} minutes {limit_secs} seconds.")
             for i,q in enumerate(quiz_data):
                 user_answer = request.POST.get(f"q{i}")
-                print(repr(user_answer[0]))
-                sys.stdout.flush()
+                # print(repr(user_answer[0]))
+                # sys.stdout.flush()
                 correct_answer = q['answer']
                 print(repr(correct_answer))
                 sys.stdout.flush()
-                if user_answer[0]  == correct_answer:
+                if user_answer is not None and user_answer[0]  == correct_answer:
                     correct_score+=1
                     feedback.append(f"Question {i+1}: Correct")
-                else: 
+                else:
                     wrong_score+=1
-                    feedback.append(f"Question {i+1}: Incorrect. Correct answer is {correct_answer}.{q['explanation']}")
-    return render(request, "quiz.html", {"material": material, "quiz_data": quiz_data, "correct_score": correct_score, "wrong_score": wrong_score, "feedback": feedback})
+                    if user_answer is None:
+                        feedback.append(f"Question {i+1} : No answer.Correct answer is {correct_answer}.{q['explanation']}")
+                    else:
+                        feedback.append(f"Question {i+1}: Wrong. Correct answer is {correct_answer}.{q['explanation']}")
+                quiz_data=None
+                time_limit_sec=None
+                request.session.pop('quiz_data', None)
+                request.session.pop('start_time', None)
+                request.session.pop('time_limit_sec', None)
+    return render(request, "quiz.html", {"material": material, "quiz_data": quiz_data, "correct_score": correct_score, "wrong_score": wrong_score, "feedback": feedback, "time_limit_sec": time_limit_sec})
 def edit(request, material_id):
     material = get_object_or_404(StudyMaterial,id=material_id,user=request.user)
     if request.method == 'POST':

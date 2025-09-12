@@ -13,6 +13,8 @@
         {% csrf_token %}
         <label for="num_questions" class="input-label">Number of questions:</label>
         <input type="number" id="num_questions" name="num_questions" value="5" min="1" max="20" class="input-box">
+        <label class="input-label">Set Your Time (mm:ss):</label>
+        <input class="input-box" type="text" name="time_limit" placeholder="e.g. 1(min):30(sec) or 0:30(sec)" required>
         <button type="submit" name="generate" class="btn main-btn">⚡ Generate Quiz</button>
     </form>
 
@@ -25,6 +27,7 @@
 
     {% if quiz_data %}
     <!-- Quiz Form -->
+     <p> Time Remaining: <span id="timer"></span></p>
     <form method="post" class="quiz-form">
         {% csrf_token %}
         {% for q in quiz_data %}
@@ -42,8 +45,7 @@
         {% endfor %}
         <button type="submit" class="btn submit-btn">✅ Submit Answers</button>
     </form>
-    {% endif %}
-
+{% else %}
     <!-- Results -->
     {% if correct_score is not None or wrong_score is not None %}
         <div class="results-box">
@@ -52,6 +54,7 @@
             <p>❌ Wrong: <b>{{ wrong_score }}</b></p>
         </div>
     {% endif %}
+{% endif %}
 
     {% if feedback %}
         <div class="feedback-box">
@@ -66,6 +69,26 @@
 </div>
 
 <script>
+let totalSeconds = {{ time_limit_sec }};
+const timerDisplay = document.getElementById("timer");
+
+function updateTimer() {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    form = document.querySelector('.quiz-form ');
+    timerDisplay.innerText = `${minutes.toString().padStart(2,"0")}:${seconds.toString().padStart(2,"0")}`;
+    if (totalSeconds <= 0) {
+        clearInterval(timerInterval);
+        if (form) {
+            alert("⏳ Time Over! Submitting quiz automatically.");
+            form.submit();
+        }
+    }
+    totalSeconds--;
+}
+
+const timerInterval = setInterval(updateTimer, 1000);
+
     function showLoading() {
         document.getElementById("loading-msg").style.display = "block";
     }
