@@ -89,11 +89,19 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 #         'PASSWORD': '1234',
 #     }
 # }
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL', 'postgres://postgres:1234@localhost:5432/studydb'),
-        conn_max_age=600
-    )
+DATABASE_URL = os.environ.get('DATABASE_URL')
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(default=DATABASE_URL)
+    }
+else:
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':  'studydb',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+    }
 }
 
 
