@@ -25,18 +25,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e1ip6km2j7%_arm-p_*m3_)6bdrlp6^h%@p9v7r**rifi3!8an'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-RAILWAY_PUBLIC_DOMAIN = "study-buddy-study-assistant-by-google-ai-production.up.railway.app"
+DEBUG = False  # set True only for local development
 
 ALLOWED_HOSTS = [
-    'study-buddy-study-assistant-by-google-ai-production.up.railway.app',
-    'localhost',
-    '127.0.0.1',
+    "study-buddy-study-assistant-by-google-ai-production.up.railway.app",
+    "localhost",
+    "127.0.0.1",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://study-buddy-study-assistant-by-google-ai-production.up.railway.app'
+    "https://study-buddy-study-assistant-by-google-ai-production.up.railway.app"
 ]
 
 # Application definition
