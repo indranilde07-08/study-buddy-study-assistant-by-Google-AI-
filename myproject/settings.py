@@ -29,12 +29,15 @@ DEBUG = True
 
 RAILWAY_PUBLIC_DOMAIN = "study-buddy-study-assistant-by-google-ai-production.up.railway.app"
 
-RAILWAY_URL = os.getenv("RAILWAY_PUBLIC_DOMAIN")
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = [
+    'study-buddy-study-assistant-by-google-ai-production.up.railway.app',
+    'localhost',
+    '127.0.0.1',
+]
 
-if RAILWAY_URL:
-    ALLOWED_HOSTS.append(RAILWAY_URL)
-    CSRF_TRUSTED_ORIGINS = [f"https://{RAILWAY_URL}"]
+CSRF_TRUSTED_ORIGINS = [
+    'https://study-buddy-study-assistant-by-google-ai-production.up.railway.app'
+]
 
 # Application definition
 
