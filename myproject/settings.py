@@ -28,6 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://study-buddy-study-assistant-by-google-ai-production.up.railway.app'
+]
+
 
 # Application definition
 
