@@ -26,12 +26,10 @@ SECRET_KEY = 'django-insecure-e1ip6km2j7%_arm-p_*m3_)6bdrlp6^h%@p9v7r**rifi3!8an
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://study-buddy-study-assistant-by-google-ai-production.up.railway.app'
-]
-
+RAILWAY_URL = 'study-buddy-study-assistant-by-google-ai-production.up.railway.app'
+ALLOWED_HOSTS = [os.getenv("RAILWAY_URL", "127.0.0.1")]
+CSRF_TRUSTED_ORIGINS = [f"https://{os.getenv('RAILWAY_URL')}"]
 
 # Application definition
 
