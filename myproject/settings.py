@@ -29,7 +29,7 @@ DEBUG = True
 
 
 RAILWAY_URL = 'study-buddy-study-assistant-by-google-ai-production.up.railway.app'
-ALLOWED_HOSTS = [os.getenv("RAILWAY_URL", "127.0.0.1")]
+ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [f"https://{os.getenv('RAILWAY_URL')}"]
 
 # Application definition
