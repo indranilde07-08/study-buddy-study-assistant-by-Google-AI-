@@ -15,7 +15,7 @@ def generate_quiz(text, num_questions=5):
     Text:
     {text}
     """
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    model = genai.GenerativeModel("gemini-2.0-flash")
     response = model.generate_content(prompt)
 
     raw = response.candidates[0].content.parts[0].text.strip()
