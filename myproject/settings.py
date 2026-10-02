@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'atun',
 ]
 
+AUTH_USER_MODEL = "home.User"
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -96,21 +98,31 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 #         'PASSWORD': '1234',
 #     }
 # }
-DATABASE_URL = os.environ.get('DATABASE_URL')
-if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.config(default=DATABASE_URL)
-    }
-else:
-    DATABASES = {
+# DATABASE_URL = os.environ.get('DATABASE_URL')
+# if DATABASE_URL:
+#     DATABASES = {
+#         'default': dj_database_url.config(default=DATABASE_URL)
+#     }
+# else:
+#     DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME':  'studydb',
+#         'USER': 'postgres',
+#         'PASSWORD': '1234',
+#     }
+# }
+
+DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME':  'studydb',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'study_buddy_db',
+        'USER': 'study_buddy',
+        'PASSWORD': 'Indrailde@07',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
